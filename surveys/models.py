@@ -11,24 +11,24 @@ class Survey(models.Model):
 
 
 class Question(models.Model):
-    question = models.TextField()
+    question_text = models.TextField()
     required = models.BooleanField(default=True)
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.question
+        return self.question_text
 
 
 class Choice(models.Model):
     choice_text = models.CharField(max_length=200)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='choice')
 
     def __str__(self):
         return self.choice_text
 
 class Answer(models.Model):
-    answer = models.CharField(max_length=200)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    answer_text = models.CharField(max_length=200)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answer')
 
     def __str__(self):
-        return self.answer
+        return self.answer_text

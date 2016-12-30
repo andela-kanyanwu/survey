@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form>
+        {% for question in questions %}
+            {{ question.question_text }}
+            {% for choice in question.choice.all %}
+                {{ choice.choice_text }}
+            {% endfor %}
+            {{ answer_form }}
+        {% endfor %}
+    </form>
+{% endblock content %}

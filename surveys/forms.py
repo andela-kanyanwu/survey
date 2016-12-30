@@ -6,4 +6,4 @@ from .models import Answer
 class AnswerForm(ModelForm):
     class Meta:
         model = Answer
-        fields = ['question', 'answer']
+        fields = ['answer_text']
