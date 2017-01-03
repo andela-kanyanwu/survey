@@ -2,12 +2,29 @@
 
 {% block content %}
     <form>
+        <ol>
         {% for question in questions %}
-            {{ question.question_text }}
-            {% for choice in question.choice.all %}
-                {{ choice.choice_text }}
-            {% endfor %}
-            {{ answer_form }}
+            <li><h4>{{ question.question_text }}</h4></li>
+            {%  if question.question_type == "RADIO" %}
+                {% for choice in question.choice.all %}
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="answer" value={{ choice.choice_text }} />{{ choice.choice_text }}
+                        </label>
+                    </div>
+                {% endfor %}
+            {% elif question.question_type == "SELECT MULTIPLE" %}
+                {% for choice in question.choice.all %}
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="answer" value={{ choice.choice_text }} />{{ choice.choice_text }}
+                        </label>
+                    </div>
+                {% endfor %}
+            {%  else %}
+                <input type="text" placeholder="Type in your answer.....">
+            {% endif %}
         {% endfor %}
+        </ol>
     </form>
 {% endblock content %}
