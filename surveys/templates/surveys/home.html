@@ -1,9 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <ol class="breadcrumb">
+        <li class="active"><a href="{% url "surveys:home" %}">Home</a></li>
+    </ol>
     <ul>
         {% for survey in survey_list %}
             <li><a href="{% url 'surveys:survey' survey.id %}">{{ survey.name }}</a></li>
+        {% empty %}
+            <p class="text-center"><a href="{% url 'admin:index' %}">You don't have any created survey, click here to go to the admin to create a survey</a></p>
         {% endfor %}
     </ul>
 {% endblock content %}

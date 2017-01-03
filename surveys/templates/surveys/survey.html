@@ -1,13 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <ol class="breadcrumb">
+        <li><a href="{% url "surveys:home" %}">Home</a></li>
+        <li class="active"><a href="{%  url "surveys:survey" survey.id %}">Survey</a></li>
+    </ol>
+    <h2>{{ survey.name }}</h2>
+    <h5>{{ survey.description }}</h5>
     <form>
-        {% for question in questions %}
-            {{ question.question_text }}
-            {% for choice in question.choice.all %}
-                {{ choice.choice_text }}
-            {% endfor %}
-            {{ answer_form }}
+        <ol>
+        {% for question in survey.question.all %}
+            <li><h4>{{ question.question_text }}</h4></li>
+            {%  if question.question_type == "RADIO" %}
+                {% for choice in question.choice.all %}
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="answer" value={{ choice.choice_text }} />{{ choice.choice_text }}
+                        </label>
+                    </div>
+                {% endfor %}
+            {% elif question.question_type == "SELECT MULTIPLE" %}
+                {% for choice in question.choice.all %}
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="answer" value={{ choice.choice_text }} />{{ choice.choice_text }}
+                        </label>
+                    </div>
+                {% endfor %}
+            {%  else %}
+                <input type="text" placeholder="Type in your answer.....">
+            {% endif %}
         {% endfor %}
+        </ol>
+        <input type="submit" class="btn btn-info" value="Submit Button">
     </form>
 {% endblock content %}

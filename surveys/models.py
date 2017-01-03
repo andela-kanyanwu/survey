@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Survey(models.Model):
 
     name = models.CharField(max_length=150)
@@ -15,7 +16,7 @@ class Question(models.Model):
 
     question_text = models.TextField()
     required = models.BooleanField(default=True)
-    survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
+    survey = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name="question")
 
     TEXT = 'TEXT'
     RADIO = 'RADIO'
@@ -39,7 +40,7 @@ class Question(models.Model):
 
 class Choice(models.Model):
 
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="choice")
     choice_text = models.CharField(max_length=200)
 
     def __str__(self):
@@ -52,7 +53,7 @@ class Response(models.Model):
     from a particular user for a particular survey.
     """
     response_id = models.CharField(max_length=150)
-    survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
+    survey = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name="response")
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
 
@@ -63,8 +64,8 @@ class Response(models.Model):
 class Answer(models.Model):
 
     answer_body = models.TextField(blank=True, null=True)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    response = models.ForeignKey(Response, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="answer")
+    response = models.ForeignKey(Response, on_delete=models.CASCADE, null=True,  related_name="answer")
 
     def __str__(self):
         return self.answer_body
