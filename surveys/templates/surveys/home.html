@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <ol class="breadcrumb">
+        <li class="active"><a href="{% url "surveys:home" %}">Home</a></li>
+    </ol>
     <ul>
         {% for survey in survey_list %}
             <li><a href="{% url 'surveys:survey' survey.id %}">{{ survey.name }}</a></li>

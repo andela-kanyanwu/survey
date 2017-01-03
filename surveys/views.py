@@ -19,10 +19,10 @@ class SurveyView(View):
         survey_pk = kwargs.get('pk')
         answer_form = AnswerForm
 
-        questions = Question.objects.filter(survey=survey_pk)
+        survey = Survey.objects.get(id=survey_pk)
 
         context = {
             'answer_form': answer_form,
-            'questions': questions
+            'survey': survey
         }
         return render(request, 'surveys/survey.html', context)

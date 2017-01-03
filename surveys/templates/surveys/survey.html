@@ -1,9 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <ol class="breadcrumb">
+        <li><a href="{% url "surveys:home" %}">Home</a></li>
+        <li class="active"><a href="{%  url "surveys:survey" survey.id %}">Survey</a></li>
+    </ol>
+    <h2>{{ survey.name }}</h2>
+    <h5>{{ survey.description }}</h5>
     <form>
         <ol>
-        {% for question in questions %}
+        {% for question in survey.question.all %}
             <li><h4>{{ question.question_text }}</h4></li>
             {%  if question.question_type == "RADIO" %}
                 {% for choice in question.choice.all %}
@@ -26,5 +32,6 @@
             {% endif %}
         {% endfor %}
         </ol>
+        <input type="submit" class="btn btn-info" value="Submit Button">
     </form>
 {% endblock content %}
