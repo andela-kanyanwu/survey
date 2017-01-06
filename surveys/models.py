@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext_lazy as _
 
 
 class Survey(models.Model):
@@ -69,3 +71,8 @@ class Answer(models.Model):
 
     def __str__(self):
         return self.answer_body
+
+    def save(self, *args, **kwargs):
+        if Question.question_type == Question.INTEGER and not self.answer_body.isdigit():
+            raise ValidationError(_('Value must be an integer'))
+        super(Answer, self).save(*args, **kwargs)

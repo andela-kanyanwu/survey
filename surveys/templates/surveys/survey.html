@@ -7,15 +7,16 @@
     </ol>
     <h2>{{ survey.name }}</h2>
     <h5>{{ survey.description }}</h5>
-    <form>
+    <form action="{%  url "surveys:survey" survey.id %}" method="POST">
+        {% csrf_token %}
         <ol>
         {% for question in survey.question.all %}
             <li><h4>{{ question.question_text }}</h4></li>
-            {%  if question.question_type == "RADIO" %}
+            {% if question.question_type == "RADIO" %}
                 {% for choice in question.choice.all %}
                     <div class="radio">
                         <label>
-                            <input type="radio" name="answer" value={{ choice.choice_text }} />{{ choice.choice_text }}
+                            <input type="radio" name="answer_{{ question.id }}" value={{ choice.choice_text }} />{{ choice.choice_text }}
                         </label>
                     </div>
                 {% endfor %}
@@ -23,12 +24,12 @@
                 {% for choice in question.choice.all %}
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="answer" value={{ choice.choice_text }} />{{ choice.choice_text }}
+                            <input type="checkbox" name="answer_{{ question.id }}" value={{ choice.choice_text }} />{{ choice.choice_text }}
                         </label>
                     </div>
                 {% endfor %}
             {%  else %}
-                <input type="text" placeholder="Type in your answer.....">
+                <input name="answer_{{ question.id }}" type="text" placeholder="Type in your answer.....">
             {% endif %}
         {% endfor %}
         </ol>
