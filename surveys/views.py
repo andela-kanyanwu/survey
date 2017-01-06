@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.views.generic import View, ListView
 from django.db.models import Count
+from django.shortcuts import get_object_or_404
 
 from .models import Question, Choice, Survey
-from .forms import AnswerForm, AnswerFormSet
+from .forms import SurveyForm
 
 
 class HomeView(ListView):
@@ -18,25 +19,22 @@ class SurveyView(View):
 
     def get(self, request,  *args, **kwargs):
         survey_pk = kwargs.get('pk')
+        survey = get_object_or_404(Survey, pk=survey_pk)
+        survey_form = SurveyForm(survey=survey)
 
-        survey = Survey.objects.get(id=survey_pk)
+        # survey = Survey.objects.get(id=survey_pk)
 
         context = {
+            'survey_form': survey_form,
             'survey': survey
         }
         return render(request, 'surveys/survey.html', context)
 
     def post(self, request, *args, **kwargs):
         survey_pk = kwargs.get('pk')
-        answers = dict(request.POST)
-        # get the number of questions in a survey
-        # survey = Survey.objects.annotate(num_of_questions=Count('question')).get(id=survey_pk)
-        # num_of_questions = survey.num_of_questions
+        survey = get_object_or_404(Survey, pk=survey_pk)
+        survey_form = SurveyForm(dict(request.POST), survey=survey)
 
-        for key, value in answers:
-            if key.startswith('answer'):
-                # Get value of question id from the underscore delimiter in key
-                question_id = key.split('_')[1]
-                question = Question.objects.get(id=question_id)
-                for answer in value:
-                    pass
+        if survey_form.is_valid():
+            print("yes")
+            pass
