@@ -7,6 +7,7 @@ class ChoiceInline(NestedStackedInline):
     model = Choice
     extra = 1
 
+
 class QuestionInline(NestedStackedInline):
     model = Question
     extra = 0
@@ -14,16 +15,21 @@ class QuestionInline(NestedStackedInline):
     inlines = [ChoiceInline]
     search_fields = ['question']
 
+
 @admin.register(Survey)
 class SurveyAdmin(NestedModelAdmin):
     inlines = [QuestionInline]
 
+
 class AnswerInline(admin.TabularInline):
     model = Answer
-    extra = 1
+    extra = 0
+
 
 @admin.register(Response)
 class ResponseAdmin(admin.ModelAdmin):
     model = Response
 
     inlines = [AnswerInline]
+    list_display = ('responder_id', 'date_created', 'date_modified')
+    search_fields = ['responder_id']
