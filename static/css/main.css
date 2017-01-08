@@ -1,0 +1,9 @@
+.form-group label {
+    display: block;
+}
+
+.form-group ul {
+    list-style: none;
+    list-style-type: none;
+    padding-left: 10px;
+}

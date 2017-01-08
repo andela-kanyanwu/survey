@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <ol class="breadcrumb">
+        <li><a href="{% url "surveys:home" %}">Home</a></li>
+        <li class="active"><a href="{% url "surveys:response" %}">Response</a></li>
+    </ol>
+    <h2>Thank you for taking this Survey</h2>
+    <a href="{% url "surveys:home" %}" class="btn btn-info" role="button">Click here to take another survey</a>
+
+{% endblock content %}

@@ -7,31 +7,18 @@
     </ol>
     <h2>{{ survey.name }}</h2>
     <h5>{{ survey.description }}</h5>
-    <form>
-        <ol>
-        {% for question in survey.question.all %}
-            <li><h4>{{ question.question_text }}</h4></li>
-            {%  if question.question_type == "RADIO" %}
-                {% for choice in question.choice.all %}
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="answer" value={{ choice.choice_text }} />{{ choice.choice_text }}
-                        </label>
-                    </div>
-                {% endfor %}
-            {% elif question.question_type == "SELECT MULTIPLE" %}
-                {% for choice in question.choice.all %}
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="answer" value={{ choice.choice_text }} />{{ choice.choice_text }}
-                        </label>
-                    </div>
-                {% endfor %}
-            {%  else %}
-                <input type="text" placeholder="Type in your answer.....">
-            {% endif %}
+    <form action="{%  url "surveys:survey" survey.id %}" method="POST">
+        {% csrf_token %}
+        {% for field in survey_form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.html_name }}. {{ field.label }}{% if field.field.required %} *{% endif %}</label>
+                {{ field }}
+            </div>
         {% endfor %}
-        </ol>
+        <div class="form-group">
+            <label for="nickname">{{ survey.questions.count|add:"1" }}. What's your Nickname?</label>
+            <input type="text" id="nickname" name="nickname" placeholder="Nickname">
+        </div>
         <input type="submit" class="btn btn-info" value="Submit Button">
     </form>
 {% endblock content %}
