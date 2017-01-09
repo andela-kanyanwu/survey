@@ -33,17 +33,17 @@ class SurveyForm(forms.Form):
 
             self.fields.update({field_name: field_type})
 
-    def save(self, survey, nickname):
+    def save(self, survey, responder_id):
         """
         save survey response in the Answer and Response model
         :param survey: survey object
-        :param nickname: nickname submitted with the form
+        :param responder_id: nickname submitted with the form
         :return:
         """
 
         # create response
         response = Response.objects.create(
-            responder_id=nickname,
+            responder_id=responder_id,
             survey=survey
         )
 

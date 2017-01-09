@@ -33,10 +33,10 @@ class SurveyView(View):
         survey_form = SurveyForm(request.POST, survey=survey)
 
         # get the nickname if any was passed in
-        nickname = request.POST.get('nickname') if request.POST.get('nickname') else 'Anonymous'
+        responder_id = request.POST.get('responder_id') if request.POST.get('responder_id') else 'Anonymous'
 
         if survey_form.is_valid():
-            survey_form.save(survey, nickname)
+            survey_form.save(survey, responder_id)
             # redirect to the response page
             return redirect('surveys:response')
         else:
